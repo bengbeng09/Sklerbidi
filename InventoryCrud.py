@@ -114,7 +114,7 @@ def search_bar(sb):
     if(len(e_search.get()) == 0):
         show()
     else:
-        cursor = conn.cursor().execute("select * from Products where '"+e_search.get()+"' like concat(name,'%','%')")
+        cursor = conn.cursor().execute("select * from Products where name like('%'+'"+e_search.get()+"'+'%')")
         rows = cursor.fetchall()
         for row in rows: tv.insert('', 'end', text=row[0], values=(row[0],row[1], row[2], row[3], row[4]))
         cursor.close()
