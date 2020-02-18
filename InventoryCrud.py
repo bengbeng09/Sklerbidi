@@ -62,10 +62,10 @@ def update():
     size = e_size.get().upper()
     price = e_price.get()
     
-    try: Item = tv.selection()[0]; check = True
+    try: Item = tv.selection()[0]; check = True ; updateMode = True
     except: check = False
 
-    if(check):
+    if(check and updateMode):
         select_item() ; e_search.delete(0,'end') ;tv.selection_remove(Item)
         insert.configure(state='disabled'); delete.configure(state='disabled')
     elif(id_num == ""): 
@@ -78,6 +78,7 @@ def update():
             insert.configure(state='normal') ; delete.configure(state='normal')
             show() ; clear() ; cursor.close()
             MessageBox.showinfo("Update Status", "Sucessfully Updated")
+            updateMode = False
         except ValueError: MessageBox.showerror("Error", "Price only accept numbers") ; e_price.delete(first = 0, last = 22)
         except: MessageBox.showerror("Error", "Invalid input")
 
