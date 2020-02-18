@@ -4,7 +4,7 @@ import tkinter.messagebox as MessageBox
 import pyodbc
 
 #konek detabesssss
-conn = pyodbc.connect('Driver={SQL Server}; Server=COMPLAB503_PC16; Database=db_clothing_line; Trusted_Connection=yes;')
+conn = pyodbc.connect('Driver={SQL Server}; Server=BENGBENG; Database=db_clothing_line; Trusted_Connection=yes;')
 cursor = conn.cursor()
 
 #functions
@@ -20,25 +20,31 @@ def clear():
 
 def insert():
     global id_num
-    
+    name = e_name.get().upper()
+    desc = e_desc.get().upper()
+    size = e_size.get().upper()
+    price = e_price.get()
     try:
-        name = e_name.get().upper()
-        desc = e_desc.get().upper()
-        size = e_size.get().upper()
-        price = e_price.get()
-        
         if(name == "" or price == "" or desc == "" or size == ""): 
-            MessageBox.showerror("Insert Status", "All fields are required")
-        else:
-            priceCheck = float(price)
+            MessageBox.showerror("Insert Status", "All fields are required") ; return
+        elif(float(price) <= 0 or float(price) > 9999999 ):
+            raise ValueError
+
+        if(insert["text"] == "INSERT"):
             cursor = conn.cursor().execute("insert into dbo.Products (name, description, size, price) values ('"+name+"','"+desc+"','"+size+"','"+price+"')")
             cursor.execute("commit")
             show() ; clear() ; cursor.close() ; 
             MessageBox.showinfo("Insert Status", "Succesfully Inserted")
-    except ValueError: MessageBox.showerror("Error", "Price only accept numbers") ; e_price.delete(first = 0, last = 22)
+        else:
+            cursor = conn.cursor().execute("update dbo.Products SET name = '"+name+"', description = '"+desc+"', size = '"+size+"', price = '"+price+"' WHERE id = '"+id_num+"'")
+            cursor.execute("commit")
+            update.configure(state='normal') ; delete.configure(state='normal')
+            show() ; clear() ; cursor.close()
+            MessageBox.showinfo("Update Status", "Sucessfully Updated")
+            insert["text"] = "INSERT"
+    except ValueError: MessageBox.showerror("Error", "Invalid Input in Price") ; e_price.delete(first = 0, last = 22)
     except: MessageBox.showerror("Error", "Invalid input")
-
-
+        
 def delete():
     global id_num
 
@@ -57,31 +63,16 @@ def delete():
 def update(): 
     global id_num
     
-    name = e_name.get().upper()
-    desc = e_desc.get().upper()
-    size = e_size.get().upper()
-    price = e_price.get()
-    
-    try: Item = tv.selection()[0]; check = True ; updateMode = True
+    try: Item = tv.selection()[0]; check = True
     except: check = False
 
-    if(check and updateMode):
+    if(check):
         select_item() ; e_search.delete(0,'end') ;tv.selection_remove(Item)
-        insert.configure(state='disabled'); delete.configure(state='disabled')
+        update.configure(state='disabled'); delete.configure(state='disabled')
+        insert["text"] = "SAVE"
     elif(id_num == ""): 
         MessageBox.showerror("Update Status", "Select an item to update")
-    else:
-        try:
-            priceCheck = float(price)
-            cursor = conn.cursor().execute("update dbo.Products SET name = '"+name+"', description = '"+desc+"', size = '"+size+"', price = '"+price+"' WHERE id = '"+id_num+"'")
-            cursor.execute("commit")
-            insert.configure(state='normal') ; delete.configure(state='normal')
-            show() ; clear() ; cursor.close()
-            MessageBox.showinfo("Update Status", "Sucessfully Updated")
-            updateMode = False
-        except ValueError: MessageBox.showerror("Error", "Price only accept numbers") ; e_price.delete(first = 0, last = 22)
-        except: MessageBox.showerror("Error", "Invalid input")
-
+        
 def show():
     global id_num
     
@@ -105,10 +96,9 @@ def select_item():
         e_size.insert(0, get[3].replace("'", "")[1:])
         e_price.insert(0, get[4].replace("'", "")[1:])
     except:
-        print("Error")
+        print("")
 
 def search_bar(sb):
-
     for row in tv.get_children(): tv.delete(row)
         
     if(len(e_search.get()) == 0):
