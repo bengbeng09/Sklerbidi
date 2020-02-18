@@ -3,7 +3,7 @@ from tkinter import ttk
 import tkinter.messagebox as MessageBox 
 import pyodbc
 
-#konek detabes
+#konek detabesssss
 conn = pyodbc.connect('Driver={SQL Server}; Server=COMPLAB503_PC16; Database=db_clothing_line; Trusted_Connection=yes;')
 cursor = conn.cursor()
 
