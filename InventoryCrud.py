@@ -4,7 +4,7 @@ import tkinter.messagebox as MessageBox
 import pyodbc
 
 #konek detabes
-conn = pyodbc.connect('Driver={SQL Server}; Server=BENGBENG; Database=db_clothing_line; Trusted_Connection=yes;')
+conn = pyodbc.connect('Driver={SQL Server}; Server=COMPLAB503_PC16; Database=db_clothing_line; Trusted_Connection=yes;')
 cursor = conn.cursor()
 
 #functions
@@ -120,7 +120,7 @@ def search_bar(sb):
 
 #MainWindows
 crud = Tk() ; crud.title("Inventory") ; crud.resizable(False, False) 
-window_width = 755 ; window_height = 390
+window_width = 830 ; window_height = 390
 screen_width = crud.winfo_screenwidth() ; screen_height = crud.winfo_screenheight()
 x_cordinate = int((screen_width/2) - (window_width/2)) ; y_cordinate = int((screen_height/2) - (window_height/2))
 crud.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
@@ -136,7 +136,7 @@ size.place(x=20, y=106)
 price = Label(crud, text = 'PRICE', font = ("Century Gothic", 11), bg = "#212121", fg = "#bdc3c7")
 price.place(x=20, y=136)
 search = Label(crud, text = 'SEARCH', font = ("Century Gothic", 11), bg = "#212121", fg = "#bdc3c7")
-search.place(x=540, y=15)
+search.place(x=578, y=15)
 
 #Mga Sulatan
 e_name = Entry(bg = "#BDBDBD", fg = "#212121", font = ("Bahnschrift", 10), bd=0)
@@ -149,16 +149,16 @@ e_price = Entry(bg = "#BDBDBD", fg = "#212121", font = ("Bahnschrift", 10), bd=0
 e_price.place(x = 150, y = 139)
 sb = StringVar()
 sb.trace("w", lambda name, index, mode, sb=sb: search_bar(sb))
-e_search = Entry(textvariable=sb, bg = "#BDBDBD", fg = "#212121", font = ("Bahnschrift", 11), bd=0, width = 15)
-e_search.place(x = 609, y = 18)
+e_search = Entry(textvariable=sb, bg = "#BDBDBD", fg = "#212121", font = ("Bahnschrift", 11), bd=0, width = 19)
+e_search.place(x = 645, y = 18)
 
 #Mga Pindutan
 insert = Button(crud, text = "INSERT", font = ("Bahnschrift SemiBold", 11), bg = "#27ae60", fg = "#ffffff", command = insert, height = "2", bd=0)
 insert.place(x = 150, y = 169, width = 141, height= 40)
 update = Button(crud, text = "UPDATE", font = ("Bahnschrift SemiBold", 11), bg = "#2980b9", fg = "#ffffff", command = update, height = "2", bd=0)
-update.place(x = 300, y = 325, width = 210, height= 40)
+update.place(x = 300, y = 322, width = 245, height= 40)
 delete = Button(crud, text = "DELETE", font = ("Bahnschrift SemiBold", 11), bg = "#c0392b", fg = "#ffffff",command = delete, height = "2", bd=0)
-delete.place(x = 520, y = 325, width = 210, height= 40)
+delete.place(x = 554, y = 322, width = 245, height= 40)
 
 #Tabla
 style = ttk.Style()
@@ -173,13 +173,13 @@ tv.pack(expand=YES, fill=BOTH)
 tv.heading(1, text = "ID")
 tv.column(1 ,minwidth=0,width=30, stretch=NO, anchor = 'center')
 tv.heading(2, text = "NAME")
-tv.column(2 ,minwidth=0,width=120, stretch=NO, anchor = 'center')
+tv.column(2 ,minwidth=0,width=130, stretch=NO, anchor = 'center')
 tv.heading(3, text = "DESCRIPTION")
-tv.column(3 ,minwidth=0,width=150, stretch=NO, anchor = 'center')
+tv.column(3 ,minwidth=0,width=160, stretch=NO, anchor = 'center')
 tv.heading(4, text = "SIZE")
-tv.column(4 ,minwidth=0,width=50, stretch=NO, anchor = 'center')
+tv.column(4 ,minwidth=0,width=90, stretch=NO, anchor = 'center')
 tv.heading(5, text = "PRICE")
-tv.column(5 ,minwidth=0,width=80, stretch=NO, anchor = 'center')
+tv.column(5 ,minwidth=0,width=89, stretch=NO, anchor = 'center')
 
 show()
 clear()
